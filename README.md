@@ -12,6 +12,8 @@
 
 Для оновлення даних (кожні 20 сек) використовується модуль Telethon у файлі client.py -> https://github.com/LonamiWebs/Telethon
 
+Для правильної роботи скрипту необхідно встановити модуль telethon на хост -> pip3 install telethon==1.27.0
+
 Файл client.py необхідно додати на виконання у crontab з такими параметрами -> * * * * * python3 /path/to/client.py (більш дієвий спосіб запустити цей файл на виконання у screen)
 
 Також на сервері, де запускається файл client.py бажано встановити 2 модулі python3 -> pip3 install python_socks та pip3 install async_timeout (щоб не отримувати помилку ConnectionError: Connection to Telegram failed 5 time(s))

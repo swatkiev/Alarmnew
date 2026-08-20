@@ -233,7 +233,7 @@ async def cmd_start(message: types.Message):
             f"• Змінити регіон: /change_city\n"
             f"• Відписатися: /unsub"
         )
-        await message.answer(text, parse_mode="Markdown")
+        await message.answer(text)
     else:
         text = "Вітаємо! Оберіть свій регіон зі списку нижче, щоб отримувати сповіщення про повітряну тривогу:"
         await message.answer(text, reply_markup=build_regions_keyboard())

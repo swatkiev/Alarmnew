@@ -84,7 +84,7 @@ def init_db():
     conn.close()
 
 def set_user_region(user_id: int, region_id: int):
-    """Сохраняет или обновляет регион пользователя (Пункт 3)."""
+    """Сохраняет или обновляет регион пользователя."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute("""
@@ -96,7 +96,7 @@ def set_user_region(user_id: int, region_id: int):
     conn.close()
 
 def delete_user(user_id: int):
-    """Удаляет пользователя из базы данных (Пункт 4)."""
+    """Удаляет пользователя из базы данных."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
@@ -143,7 +143,7 @@ def update_alarm_state(region_id: int, is_active: bool):
 
 # --- Клавиатуры ---
 def build_regions_keyboard():
-    """Создает Inline-клавиатуру со списком регионов (Пункт 1)."""
+    """Создает Inline-клавиатуру со списком регионов."""
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     buttons = [
         types.InlineKeyboardButton(
@@ -202,14 +202,14 @@ async def run_alarm_check_cycle():
                 else:
                     msg = f"✅ **ВІДБIЙ ТРИВОГИ!**\n\nУ регіоні **{reg_name}** лунає відбій тривоги."
 
-                # Отправка сообщений всем подписчикам этого региона (Пункт 2)
+                # Отправка сообщений всем подписчикам этого региона
                 users = get_users_by_region(reg_id)
                 for uid in users:
                     try:
                         await bot.send_message(uid, msg, parse_mode="Markdown")
                         notifications_sent += 1
                     except (BotBlocked, UserDeactivated):
-                        # Удаляем заблокировавшего бота пользователя (Пункт 4)
+                        # Удаляем заблокировавшего бота пользователя
                         logging.info(f"Користувач {uid} заблокував бота. Видаляємо з БД.")
                         delete_user(uid)
                     except Exception as e:
@@ -253,7 +253,7 @@ async def cmd_renew(message: types.Message):
 
 @dp.message_handler(commands=['change_city'])
 async def cmd_change_city(message: types.Message):
-    """Команда для смены региона (Пункт 3)."""
+    """Команда для смены региона."""
     text = "Оберіть новий регіон зі списку:"
     await message.answer(text, reply_markup=build_regions_keyboard())
 
@@ -278,7 +278,7 @@ async def cmd_check(message: types.Message):
 
 @dp.message_handler(commands=['unsub'])
 async def cmd_unsub(message: types.Message):
-    """Отписка пользователя и удаление его данных (Пункт 4)."""
+    """Отписка пользователя и удаление его данных."""
     user_id = message.from_user.id
     user_reg = get_user_region(user_id)
 
